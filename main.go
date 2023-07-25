@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func main() {
@@ -61,7 +62,7 @@ func pricer() {
 		tax = 0.0
 	}
 
-	result := price * (1 - (discount / 100)) * (1 + tax)
+	result := math.Round(price*(1-(discount/100))*(1+tax)*100) / 100
 
 	fmt.Println(result)
 
