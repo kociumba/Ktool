@@ -17,10 +17,8 @@ func main() {
 	switch {
 	case mode == "pricer":
 		pricer()
-		fmt.Println(mode)
 	case mode == "funny":
 		funny()
-		fmt.Println(mode)
 	}
 
 }
