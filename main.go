@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+
+	"github.com/AlecAivazis/survey/v2"
 )
 
 func main() {
@@ -14,10 +16,18 @@ func main() {
 }
 
 func modeSelect() {
-	var mode = ""
 
-	fmt.Println("select app mode, options are: pricer, funny")
-	fmt.Scanln(&mode)
+	mode := ""
+
+	prompt := &survey.Select{
+		Message: "app mode:",
+		Options: []string{"pricer", "funny"},
+	}
+
+	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
+
+	// fmt.Println("select app mode, options are: pricer, funny")
+	// fmt.Scanln(&mode)
 
 	switch {
 	case mode == "pricer":
@@ -40,8 +50,15 @@ func pricer() {
 	fmt.Println("discount")
 	fmt.Scanln(&discount)
 
-	fmt.Println("apply tax ?")
-	fmt.Scanln(&tax_version)
+	prompt := &survey.Select{
+		Message: "use tax ?",
+		Options: []string{"poland", "no tax"},
+	}
+
+	survey.AskOne(prompt, &tax_version, survey.WithValidator(survey.Required))
+
+	// fmt.Println("apply tax ?")
+	// fmt.Scanln(&tax_version)
 
 	switch {
 	case tax_version == "poland":
