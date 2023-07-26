@@ -91,7 +91,7 @@ func pricer() {
 	result := math.Round(price*(1-(discount/100))*(1+tax)*100) / 100
 
 	fmt.Println("<----------DISCOUNTED PRICE---------->")
-	cfmt.Successln(" the discounted price is ", result)
+	fmt.Println(ctc.ForegroundBrightGreen, " the discounted price is ", result, ctc.Reset)
 	if result > price {
 		isItScam = "the government is scamming you"
 		fmt.Println(ctc.ForegroundBright, isItScam, ctc.Reset)
