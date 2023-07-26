@@ -125,7 +125,7 @@ func funny() {
 		return
 	}
 
-	cfmt.Infoln(joke.Joke)
+	fmt.Println(ctc.Negative, joke.Joke, ctc.Reset)
 
 }
 
