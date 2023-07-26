@@ -7,6 +7,14 @@ import (
 	"net/http"
 
 	"github.com/AlecAivazis/survey/v2"
+
+	"github.com/mingrammer/cfmt"
+
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/v3/host"
+	"github.com/shirou/gopsutil/v3/mem"
+
+	"github.com/wzshiming/ctc"
 )
 
 func main() {
@@ -21,7 +29,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"pricer", "funny"},
+		Options: []string{"pricer", "sys info", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -34,6 +42,11 @@ func modeSelect() {
 		pricer()
 	case mode == "funny":
 		funny()
+	case mode == "sys info":
+		sysInfo()
+	case mode == "exit":
+		cfmt.Errorln("exiting...")
+		return
 	}
 }
 
@@ -44,21 +57,26 @@ func pricer() {
 	var tax_version = ""
 	var tax = 0.0
 
-	fmt.Println("price")
-	fmt.Scanln(&price)
+	promptPrice := &survey.Input{
+		Message: "select the price:",
+		Help:    "the currency that's inputed here will also be the result",
+	}
 
-	fmt.Println("discount")
-	fmt.Scanln(&discount)
+	survey.AskOne(promptPrice, &price, survey.WithValidator(survey.Required))
 
-	prompt := &survey.Select{
+	promptDiscount := &survey.Input{
+		Message: "select the discount:",
+		Help:    "this is trated as a % so a bogus value like 78834 won't work",
+	}
+
+	survey.AskOne(promptDiscount, &discount, survey.WithValidator(survey.Required))
+
+	promptTax := &survey.Select{
 		Message: "use tax ?",
 		Options: []string{"poland", "no tax"},
 	}
 
-	survey.AskOne(prompt, &tax_version, survey.WithValidator(survey.Required))
-
-	// fmt.Println("apply tax ?")
-	// fmt.Scanln(&tax_version)
+	survey.AskOne(promptTax, &tax_version, survey.WithValidator(survey.Required))
 
 	switch {
 	case tax_version == "poland":
@@ -69,7 +87,7 @@ func pricer() {
 
 	result := math.Round(price*(1-(discount/100))*(1+tax)*100) / 100
 
-	fmt.Println(result)
+	cfmt.Successln(result)
 
 }
 
@@ -107,6 +125,22 @@ func funny() {
 		return
 	}
 
-	fmt.Println(joke.Joke)
+	cfmt.Infoln(joke.Joke)
 
+}
+
+func sysInfo() {
+	v, _ := mem.VirtualMemory()
+	o, _ := host.Info()
+	c, _ := cpu.Info()
+
+	memoryInfo := fmt.Sprintf("Total: %v, Free:%v, UsedPercent:%f%%", v.Total, v.Free, v.UsedPercent)
+	osInfo := fmt.Sprintf("OS: %v, Uptime: %v", o.OS, o.Uptime)
+	cpuInfo := fmt.Sprintf("Vendor: %v, Model: %v", c[0].VendorID, c[0].ModelName)
+
+	fmt.Println("<----------SYS INFO---------->")
+	fmt.Println(ctc.ForegroundYellow, "System:", osInfo, ctc.Reset)
+	fmt.Println(ctc.ForegroundBrightCyan, "Cpu:", cpuInfo, ctc.Reset)
+	fmt.Println(ctc.ForegroundBrightGreenBackgroundBlack, "Memory:", memoryInfo, ctc.Reset)
+	fmt.Println("<---------------------------->")
 }
