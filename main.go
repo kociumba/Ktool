@@ -9,6 +9,11 @@ import (
 
 func main() {
 
+	modeSelect()
+
+}
+
+func modeSelect() {
 	var mode = ""
 
 	fmt.Println("select app mode, options are: pricer, funny")
@@ -20,7 +25,6 @@ func main() {
 	case mode == "funny":
 		funny()
 	}
-
 }
 
 func pricer() {
