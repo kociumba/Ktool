@@ -32,7 +32,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "pricer", "currency convert", "fibonacci", "funny", "exit"},
+		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -43,6 +43,8 @@ func modeSelect() {
 	switch {
 	case mode == "pricer":
 		pricer()
+	case mode == "notes":
+		notes()
 	case mode == "funny":
 		funny()
 	case mode == "sys info":
@@ -104,6 +106,75 @@ func pricer() {
 		fmt.Println(ctc.ForegroundBright, isItScam, ctc.Reset)
 	}
 	fmt.Println("<------------------------------------>")
+}
+
+func notes() {
+
+	var noteAction = ""
+
+	promptNote := &survey.Select{
+		Renderer: survey.Renderer{},
+		Message:  "What to do:",
+		Options:  []string{"add a note", "read notes", "delete notes"},
+		Default:  nil,
+		Help:     "select what you want to do with your notes",
+	}
+
+	survey.AskOne(promptNote, &noteAction, survey.WithValidator(survey.Required))
+
+	switch {
+	case noteAction == "add a note":
+		addNote()
+	case noteAction == "read notes":
+		//readNotes()
+	case noteAction == "delete notes":
+		//deleteNotes()
+	}
+
+}
+
+func addNote() {
+
+	var newNote = ""
+
+	promptNote := &survey.Input{
+		Renderer: survey.Renderer{},
+		Message:  "enter your note:",
+		Default:  "",
+		Help:     "enter a note here and it will be saved for later use",
+	}
+
+	survey.AskOne(promptNote, &newNote, survey.WithValidator(survey.Required))
+
+	f, err := os.OpenFile("notes.txt", os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+
+	defer f.Close()
+
+	noteAssebled := fmt.Sprintf("%s\n", newNote)
+	fmt.Println(noteAssebled)
+
+	_, err = f.WriteString(noteAssebled)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
+
+}
+
+func readNotes() {
+
+	f, err := os.Open("notes.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+
+	defer f.Close()
+
 }
 
 func funny() {
