@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -30,7 +32,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "pricer", "currency convert", "funny", "exit"},
+		Options: []string{"sys info", "pricer", "currency convert", "fibonacci", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -47,6 +49,8 @@ func modeSelect() {
 		sysInfo()
 	case mode == "currency convert":
 		currencyConvert()
+	case mode == "fibonacci":
+		fibonacciLuncher()
 	case mode == "test":
 		test()
 	case mode == "exit":
@@ -136,7 +140,9 @@ func funny() {
 		return
 	}
 
+	fmt.Println("<----------GO DRINK SOMETHING---------->")
 	fmt.Println(ctc.Negative, joke.Joke, ctc.Reset)
+	fmt.Println("<-------------------------------------->")
 
 }
 
@@ -219,6 +225,54 @@ func currencyConvert() {
 
 	fmt.Println(ctc.ForegroundBrightGreen, amount, from, "is", exchangedAmount, to, ctc.Reset)
 	fmt.Println("<------------------------------>")
+}
+
+func fibonacciCalc(n int, cache map[int]int) int {
+	if val, ok := cache[n]; ok {
+		return val
+	}
+
+	var result int
+	if n == 0 {
+		result = 0
+	} else if n == 1 {
+		result = 1
+	} else {
+		result = fibonacciCalc(n-1, cache) + fibonacciCalc(n-2, cache)
+	}
+
+	cache[n] = result
+	return result
+}
+
+func fibonacciLuncher() {
+	var input string
+
+	promt := &survey.Input{
+		Message: "enter a number: ",
+		Help:    "enter a number to get the fibonacci number for that number (this calculation breaks somewhere around the 1000th place in the sequence couse i'm lazy)",
+	}
+
+	survey.AskOne(promt, &input, survey.WithValidator(survey.Required))
+
+	n, err := strconv.Atoi(input)
+	if err != nil {
+		fmt.Println(ctc.ForegroundRed, "Invalid input. Please enter an integer.", ctc.Reset)
+		os.Exit(1)
+	}
+
+	cache := make(map[int]int)
+
+	for i := 0; i <= n; i++ {
+		msg := fmt.Sprintf("Fibonacci(%d) = %d\n", i, fibonacciCalc(i, cache))
+
+		if i == n {
+			fmt.Println("<----------FIBONACCI SEQUENCE---------->")
+			fmt.Println(" ")
+			fmt.Println(ctc.ForegroundBrightGreen, msg, ctc.Reset)
+			fmt.Println("<-------------------------------------->")
+		}
+	}
 }
 
 func test() {
