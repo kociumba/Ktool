@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"time"
 
 	"github.com/AlecAivazis/survey/v2"
 
@@ -46,6 +47,8 @@ func modeSelect() {
 		sysInfo()
 	case mode == "currency convert":
 		currencyConvert()
+	case mode == "test":
+		test()
 	case mode == "exit":
 		cfmt.Errorln("exiting...")
 		return
@@ -138,19 +141,30 @@ func funny() {
 }
 
 func sysInfo() {
-	v, _ := mem.VirtualMemory()
-	o, _ := host.Info()
-	c, _ := cpu.Info()
 
-	memoryInfo := fmt.Sprintf("Total: %v, Free:%v, UsedPercent:%f%%", v.Total, v.Free, v.UsedPercent)
-	osInfo := fmt.Sprintf("OS: %v, Uptime: %v, Procs: %v", o.OS, o.Uptime, o.Procs)
-	cpuInfo := fmt.Sprintf("Vendor: %v, Cores: %v, Mhz: %v, Model: %v", c[0].VendorID, c[0].Cores, c[0].Mhz, c[0].ModelName)
+	for {
+		v, _ := mem.VirtualMemory()
+		o, _ := host.Info()
+		c, _ := cpu.Info()
 
-	fmt.Println("<----------SYS INFO---------->")
-	fmt.Println(ctc.ForegroundYellow, "System:", osInfo, ctc.Reset)
-	fmt.Println(ctc.ForegroundBrightCyan, "Cpu:", cpuInfo, ctc.Reset)
-	fmt.Println(ctc.ForegroundBrightGreenBackgroundBlack, "Memory:", memoryInfo, ctc.Reset)
-	fmt.Println("<---------------------------->")
+		memoryInfo := fmt.Sprintf("Total: %v, Free:%v, UsedPercent:%f%%", v.Total, v.Free, v.UsedPercent)
+		osInfo := fmt.Sprintf("OS: %v, Uptime: %v, Procs: %v", o.OS, o.Uptime, o.Procs)
+		cpuInfo := fmt.Sprintf("Vendor: %v, Cores: %v, Mhz: %v, Model: %v", c[0].VendorID, c[0].Cores, c[0].Mhz, c[0].ModelName)
+
+		go test()
+
+		fmt.Print("\033[2J")
+		fmt.Print("\033[H")
+
+		fmt.Println("<----------SYS INFO---------->")
+		fmt.Println(ctc.ForegroundYellow, "System:", osInfo, ctc.Reset)
+		fmt.Println(ctc.ForegroundBrightCyan, "Cpu:", cpuInfo, ctc.Reset)
+		fmt.Println(ctc.ForegroundBrightGreenBackgroundBlack, "Memory:", memoryInfo, ctc.Reset)
+
+		fmt.Println("<---------------------------->")
+
+		time.Sleep(500 * time.Millisecond)
+	}
 }
 
 func currencyConvert() {
@@ -205,4 +219,8 @@ func currencyConvert() {
 
 	fmt.Println(ctc.ForegroundBrightGreen, amount, from, "is", exchangedAmount, to, ctc.Reset)
 	fmt.Println("<------------------------------>")
+}
+
+func test() {
+
 }
