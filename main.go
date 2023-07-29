@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"time"
 
@@ -32,7 +35,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "exit"},
+		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "test", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -126,7 +129,7 @@ func notes() {
 	case noteAction == "add a note":
 		addNote()
 	case noteAction == "read notes":
-		//readNotes()
+		readNotes()
 	case noteAction == "delete notes":
 		//deleteNotes()
 	}
@@ -134,8 +137,7 @@ func notes() {
 }
 
 func addNote() {
-
-	var newNote = ""
+	var newNote string
 
 	promptNote := &survey.Input{
 		Renderer: survey.Renderer{},
@@ -146,34 +148,73 @@ func addNote() {
 
 	survey.AskOne(promptNote, &newNote, survey.WithValidator(survey.Required))
 
-	f, err := os.OpenFile("notes.txt", os.O_APPEND|os.O_WRONLY, 0600)
+	targetFile := "notes.txt"
+	absPath := targetFile
+
+	if runtime.GOOS == "windows" {
+		root := "/Program Files (x86)/fuck you inc/ktool"
+		absPath = filepath.Join(root, targetFile)
+	}
+
+	_, err := os.Stat(absPath)
+	if os.IsNotExist(err) {
+		// File not found, create it
+		_, err = os.Create(absPath)
+		if err != nil {
+			fmt.Println("Error creating file:", err)
+			return
+		}
+		fmt.Println(ctc.ForegroundYellow, "The note save file has been created. This should only happen once if you are on windows", ctc.Reset)
+	}
+
+	f, err := os.OpenFile(absPath, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return
 	}
-
 	defer f.Close()
 
-	noteAssebled := fmt.Sprintf("%s\n", newNote)
-	fmt.Println(noteAssebled)
+	noteAssembled := fmt.Sprintf("%s\n", newNote)
 
-	_, err = f.WriteString(noteAssebled)
+	_, err = f.WriteString(noteAssembled)
 	if err != nil {
 		fmt.Println("Error writing to file:", err)
 		return
 	}
-
 }
 
 func readNotes() {
 
-	f, err := os.Open("notes.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
+	if runtime.GOOS == "windows" {
+		f, err := os.Open("/Program Files (x86)/fuck you inc/ktool/notes.txt")
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
 
-	defer f.Close()
+		defer f.Close()
+
+		scanner := bufio.NewScanner(f)
+
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	} else {
+		f, err := os.Open("notes.txt")
+
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
+
+		defer f.Close()
+
+		scanner := bufio.NewScanner(f)
+
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	}
 
 }
 
@@ -227,8 +268,6 @@ func sysInfo() {
 		memoryInfo := fmt.Sprintf("Total: %v, Free:%v, UsedPercent:%f%%", v.Total, v.Free, v.UsedPercent)
 		osInfo := fmt.Sprintf("OS: %v, Uptime: %v, Procs: %v", o.OS, o.Uptime, o.Procs)
 		cpuInfo := fmt.Sprintf("Vendor: %v, Cores: %v, Mhz: %v, Model: %v", c[0].VendorID, c[0].Cores, c[0].Mhz, c[0].ModelName)
-
-		go test()
 
 		fmt.Print("\033[2J")
 		fmt.Print("\033[H")
