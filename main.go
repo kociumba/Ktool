@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"math"
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"time"
@@ -35,7 +37,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "test", "exit"},
+		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -131,7 +133,7 @@ func notes() {
 	case noteAction == "read notes":
 		readNotes()
 	case noteAction == "delete notes":
-		//deleteNotes()
+		deleteNotes()
 	}
 
 }
@@ -195,9 +197,11 @@ func readNotes() {
 		defer f.Close()
 
 		scanner := bufio.NewScanner(f)
+		counter := 1
 
 		for scanner.Scan() {
-			fmt.Println(scanner.Text())
+			fmt.Println(counter, scanner.Text())
+			counter++
 		}
 	} else {
 		f, err := os.Open("notes.txt")
@@ -210,12 +214,127 @@ func readNotes() {
 		defer f.Close()
 
 		scanner := bufio.NewScanner(f)
+		counter := 1
 
 		for scanner.Scan() {
-			fmt.Println(scanner.Text())
+			fmt.Println(counter, scanner.Text())
+			counter++
 		}
 	}
 
+}
+
+func deleteNotes() {
+
+	if runtime.GOOS == "windows" {
+		f, err := os.Open("/Program Files (x86)/fuck you inc/ktool/notes.txt")
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
+
+		defer f.Close()
+
+		counter := 1
+
+		notes := []string{}
+		scanner := bufio.NewScanner(f)
+		for scanner.Scan() {
+			notes = append(notes, scanner.Text())
+			counter++
+		}
+
+		notesToDelete := []string{}
+
+		prompt := &survey.MultiSelect{
+			Renderer: survey.Renderer{},
+			Message:  "choose which notes to delete",
+			Options:  notes,
+			Default:  nil,
+			Help:     "changes made here are permanent",
+		}
+
+		survey.AskOne(prompt, &notesToDelete, survey.WithValidator(survey.Required))
+
+		fmt.Println(notesToDelete)
+
+		err = f.Close()
+		if err != nil {
+			fmt.Println("Error closing file:", err)
+			return
+		}
+
+		deleter(notesToDelete)
+	}
+}
+
+func deleter(notesToDelete []string) error {
+	if runtime.GOOS == "windows" {
+		// Open the notes.txt file
+		file, err := os.Open("/Program Files (x86)/fuck you inc/ktool/notes.txt")
+		if err != nil {
+			return fmt.Errorf("error opening file: %v", err)
+		}
+
+		// Create a temporary file to write the updated notes
+		tmpFile, err := os.CreateTemp("", "notes.txt")
+		if err != nil {
+			return fmt.Errorf("error creating temporary file: %v", err)
+		}
+
+		defer os.Remove(tmpFile.Name())
+
+		// Read the notes.txt file line by line and write non-matching lines to the temporary file
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := scanner.Text()
+
+			// Check if the line matches any note in the notesToDelete array
+			isMatched := false
+			for _, note := range notesToDelete {
+				matched, _ := regexp.MatchString("^"+note+"$", line)
+				if matched {
+					isMatched = true
+					break
+				}
+			}
+			// Write non-matching lines to the temporary file
+			if !isMatched {
+				_, err := io.WriteString(tmpFile, line+"\n")
+
+				if err != nil {
+					fmt.Printf("error writing to temporary file: %v", err)
+				}
+			}
+		}
+
+		// Close the original file
+		err = file.Close()
+		if err != nil {
+			return fmt.Errorf("error closing file: %w", err)
+		}
+
+		// Close the temporary file
+		err = tmpFile.Close()
+		if err != nil {
+			return fmt.Errorf("error closing temporary file: %w", err)
+		}
+
+		// Remove the original notes.txt file
+		err = os.Remove("/Program Files (x86)/fuck you inc/ktool/notes.txt")
+		if err != nil {
+			fmt.Printf("error removing original file: %v", err)
+		}
+
+		// Rename the temporary file to notes.txt
+		err = os.Rename(tmpFile.Name(), "/Program Files (x86)/fuck you inc/ktool/notes.txt")
+		if err != nil {
+			fmt.Printf("error renaming temporary file: %v", err)
+		}
+
+	}
+
+	return nil
 }
 
 func funny() {
