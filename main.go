@@ -270,13 +270,12 @@ func deleteNotes() {
 
 func deleter(notesToDelete []string) error {
 	if runtime.GOOS == "windows" {
-		// Open the notes.txt file
+
 		file, err := os.Open("/Program Files (x86)/fuck you inc/ktool/notes.txt")
 		if err != nil {
 			return fmt.Errorf("error opening file: %v", err)
 		}
 
-		// Create a temporary file to write the updated notes
 		tmpFile, err := os.CreateTemp("", "notes.txt")
 		if err != nil {
 			return fmt.Errorf("error creating temporary file: %v", err)
@@ -284,12 +283,9 @@ func deleter(notesToDelete []string) error {
 
 		defer os.Remove(tmpFile.Name())
 
-		// Read the notes.txt file line by line and write non-matching lines to the temporary file
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			line := scanner.Text()
-
-			// Check if the line matches any note in the notesToDelete array
 			isMatched := false
 			for _, note := range notesToDelete {
 				matched, _ := regexp.MatchString("^"+note+"$", line)
@@ -298,7 +294,6 @@ func deleter(notesToDelete []string) error {
 					break
 				}
 			}
-			// Write non-matching lines to the temporary file
 			if !isMatched {
 				_, err := io.WriteString(tmpFile, line+"\n")
 
@@ -308,25 +303,21 @@ func deleter(notesToDelete []string) error {
 			}
 		}
 
-		// Close the original file
 		err = file.Close()
 		if err != nil {
 			return fmt.Errorf("error closing file: %w", err)
 		}
 
-		// Close the temporary file
 		err = tmpFile.Close()
 		if err != nil {
 			return fmt.Errorf("error closing temporary file: %w", err)
 		}
 
-		// Remove the original notes.txt file
 		err = os.Remove("/Program Files (x86)/fuck you inc/ktool/notes.txt")
 		if err != nil {
 			fmt.Printf("error removing original file: %v", err)
 		}
 
-		// Rename the temporary file to notes.txt
 		err = os.Rename(tmpFile.Name(), "/Program Files (x86)/fuck you inc/ktool/notes.txt")
 		if err != nil {
 			fmt.Printf("error renaming temporary file: %v", err)
