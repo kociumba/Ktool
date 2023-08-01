@@ -37,7 +37,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "notes", "pricer", "currency convert", "fibonacci", "funny", "exit"},
+		Options: []string{"sys info", "notes", "currency convert", "pricer", "fibonacci", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -50,6 +50,8 @@ func modeSelect() {
 		pricer()
 	case mode == "notes":
 		notes()
+	case mode == "messenger":
+		messenger()
 	case mode == "funny":
 		funny()
 	case mode == "sys info":
@@ -111,6 +113,86 @@ func pricer() {
 		fmt.Println(ctc.ForegroundBright, isItScam, ctc.Reset)
 	}
 	fmt.Println("<------------------------------------>")
+
+	main()
+}
+
+func messenger() {
+
+	action := ""
+
+	promt := &survey.Select{
+		Renderer: survey.Renderer{},
+		Message:  "send messages or manage contacts:",
+		Options:  []string{"send/read messages", "add/remove contacts"},
+		Default:  nil,
+	}
+
+	survey.AskOne(promt, &action, survey.WithValidator(survey.Required))
+
+	switch {
+	case action == "send/read messages":
+		messages()
+	case action == "add/remove contacts":
+		//contacts()
+	}
+
+}
+
+func messages() {
+
+	listOfContacts := []string{}
+	selectedContactIndex := -1
+
+	_, err := os.Stat("/Program Files (x86)/fuck you inc/ktool/contacts.txt")
+	if os.IsNotExist(err) {
+		// File not found, create it
+		_, err = os.Create("/Program Files (x86)/fuck you inc/ktool/contacts.txt")
+		if err != nil {
+			fmt.Println("Error creating file:", err)
+			return
+		}
+		fmt.Println(ctc.ForegroundYellow, "The contacts save file has been created. This should only happen once if you are on windows", ctc.Reset)
+	}
+
+	f, err := os.Open("/Program Files (x86)/fuck you inc/ktool/contacts.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		listOfContacts = append(listOfContacts, scanner.Text())
+	}
+
+	prompt := &survey.Select{
+		Renderer: survey.Renderer{},
+		Message:  "",
+		Options:  listOfContacts,
+		Default:  nil,
+		Help:     "",
+	}
+
+	survey.AskOne(prompt, &selectedContactIndex, survey.WithValidator(survey.Required))
+
+	if selectedContactIndex >= 0 && selectedContactIndex < len(listOfContacts) {
+		selectedContact := listOfContacts[selectedContactIndex]
+		fPath := fmt.Sprintf("%s/%s", "/Program Files (x86)/fuck you inc/ktool", selectedContact+".txt")
+		f, err := os.OpenFile(fPath, os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil {
+			fmt.Println(ctc.ForegroundYellow, "Error opening message file for contact:", selectedContact, ctc.Reset)
+			return
+		}
+		defer f.Close()
+
+		DMscanner := bufio.NewScanner(f)
+		for DMscanner.Scan() {
+			fmt.Println(DMscanner.Text())
+		}
+	}
 }
 
 func notes() {
@@ -183,6 +265,8 @@ func addNote() {
 		fmt.Println("Error writing to file:", err)
 		return
 	}
+
+	notes()
 }
 
 func readNotes() {
@@ -222,6 +306,7 @@ func readNotes() {
 		}
 	}
 
+	notes()
 }
 
 func deleteNotes() {
@@ -266,6 +351,8 @@ func deleteNotes() {
 
 		deleter(notesToDelete)
 	}
+
+	notes()
 }
 
 func deleter(notesToDelete []string) error {
@@ -366,6 +453,7 @@ func funny() {
 	fmt.Println(ctc.Negative, joke.Joke, ctc.Reset)
 	fmt.Println("<-------------------------------------->")
 
+	main()
 }
 
 func sysInfo() {
@@ -391,6 +479,7 @@ func sysInfo() {
 
 		time.Sleep(500 * time.Millisecond)
 	}
+
 }
 
 func currencyConvert() {
@@ -445,6 +534,8 @@ func currencyConvert() {
 
 	fmt.Println(ctc.ForegroundBrightGreen, amount, from, "is", exchangedAmount, to, ctc.Reset)
 	fmt.Println("<------------------------------>")
+
+	main()
 }
 
 func fibonacciCalc(n int, cache map[int]int) int {
@@ -463,6 +554,7 @@ func fibonacciCalc(n int, cache map[int]int) int {
 
 	cache[n] = result
 	return result
+
 }
 
 func fibonacciLuncher() {
@@ -493,6 +585,8 @@ func fibonacciLuncher() {
 			fmt.Println("<-------------------------------------->")
 		}
 	}
+
+	main()
 }
 
 func test() {
