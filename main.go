@@ -188,6 +188,9 @@ func messages() {
 		}
 		defer f.Close()
 
+		// the actual connection and messaging
+		// fuck
+
 		DMscanner := bufio.NewScanner(f)
 		for DMscanner.Scan() {
 			fmt.Println(DMscanner.Text())
