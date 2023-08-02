@@ -10,3 +10,8 @@ To install this piece of shit compile it yourself with the go toolchain or go to
 
 
 for now notes will only work per direcotry instead of system wide on linux and mac 
+
+
+# note
+
+if you are a dveloper, fixes to my shit code are more than welcome
