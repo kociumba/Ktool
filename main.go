@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"math"
 	"net/http"
 	"os"
@@ -15,14 +16,15 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/atotto/clipboard"
+
+	"github.com/wzshiming/ctc"
 
 	"github.com/mingrammer/cfmt"
 
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/mem"
-
-	"github.com/wzshiming/ctc"
 )
 
 func main() {
@@ -37,7 +39,7 @@ func modeSelect() {
 
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "notes", "currency convert", "pricer", "fibonacci", "funny", "exit"},
+		Options: []string{"sys info", "notes", "currency converter", "list from directory", "time zone converter", "pricer", "fibonacci", "funny", "exit"},
 	}
 
 	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
@@ -50,12 +52,16 @@ func modeSelect() {
 		pricer()
 	case mode == "notes":
 		notes()
+	case mode == "list from directory":
+		listFromDirectory()
 	case mode == "messenger":
 		messenger()
 	case mode == "funny":
 		funny()
 	case mode == "sys info":
 		sysInfo()
+	case mode == "time zone converter":
+		timeZoneConvert()
 	case mode == "currency convert":
 		currencyConvert()
 	case mode == "fibonacci":
@@ -65,6 +71,7 @@ func modeSelect() {
 	case mode == "exit":
 		cfmt.Errorln("exiting...")
 		return
+
 	}
 }
 
@@ -269,7 +276,7 @@ func addNote() {
 		return
 	}
 
-	notes()
+	// notes()
 }
 
 func readNotes() {
@@ -309,7 +316,7 @@ func readNotes() {
 		}
 	}
 
-	notes()
+	// notes()
 }
 
 func deleteNotes() {
@@ -355,7 +362,7 @@ func deleteNotes() {
 		deleter(notesToDelete)
 	}
 
-	notes()
+	// notes()
 }
 
 func deleter(notesToDelete []string) error {
@@ -386,7 +393,6 @@ func deleter(notesToDelete []string) error {
 			}
 			if !isMatched {
 				_, err := io.WriteString(tmpFile, line+"\n")
-
 				if err != nil {
 					fmt.Printf("error writing to temporary file: %v", err)
 				}
@@ -416,6 +422,45 @@ func deleter(notesToDelete []string) error {
 	}
 
 	return nil
+}
+
+func listFromDirectory() {
+	dir := ""
+	fileList := ""
+
+	prompt := &survey.Input{
+		Message: "select the directory (you can use env variables):",
+		Help:    "this is the directory that will be read",
+	}
+
+	survey.AskOne(prompt, &dir, survey.WithValidator(survey.Required))
+
+	files, err := os.ReadDir(os.ExpandEnv(dir))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	outputFile, err := os.Create("fileList.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer outputFile.Close()
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+		outputFile.WriteString(file.Name() + "\n")
+		fileList += file.Name() + "\n"
+	}
+
+	err = clipboard.WriteAll(fileList)
+	if err != nil {
+		fmt.Println("Error copying to clipboard:", err)
+		return
+	}
+
+	log.Println("File names logged to fileList.txt and copied to clipboard")
 }
 
 func funny() {
@@ -482,6 +527,30 @@ func sysInfo() {
 
 		time.Sleep(500 * time.Millisecond)
 	}
+
+}
+
+func timeZoneConvert() {
+
+	client := http.Client{}
+
+	requestFrom, err := http.NewRequest("GET", "https://worldtimeapi.org/api/timezone", nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	resp, err := client.Do(requestFrom)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer resp.Body.Close()
+
+	var result map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&result)
+
+	fmt.Println(result)
 
 }
 
