@@ -14,4 +14,4 @@ for now notes will only work per direcotry instead of system wide on linux and m
 
 # note
 
-if you are a dveloper, fixes to my shit code are more than welcome
+if you are a developer, fixes to my shit code are more than welcome
