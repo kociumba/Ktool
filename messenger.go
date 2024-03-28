@@ -9,6 +9,9 @@ import (
 	"github.com/wzshiming/ctc"
 )
 
+// Unfinished implementation !
+//
+// handles the message and contact management
 func messenger() {
 
 	action := ""

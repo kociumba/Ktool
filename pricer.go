@@ -8,6 +8,7 @@ import (
 	"github.com/wzshiming/ctc"
 )
 
+// implement pricer
 func pricer() {
 
 	var price = 0.0

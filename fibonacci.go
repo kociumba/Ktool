@@ -28,6 +28,7 @@ func fibonacciCalc(n int, cache map[int]int) int {
 
 }
 
+// calculate the fibonacci sequence
 func fibonacciLuncher() {
 	var input string
 

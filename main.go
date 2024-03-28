@@ -17,41 +17,46 @@ func main() {
 }
 
 func modeSelect() {
-
 	mode := ""
-
 	prompt := &survey.Select{
 		Message: "app mode:",
-		Options: []string{"sys info", "notes", "currency converter", "list from directory", "time zone converter", "pricer", "fibonacci", "funny", "exit"},
+		Options: []string{
+			"sys info",
+			"notes",
+			"currency convert",
+			"list from directory",
+			"funny",
+			"pricer",
+			"fibonacci",
+			"time zone converter",
+			"exit",
+		},
 	}
 
-	survey.AskOne(prompt, &mode, survey.WithValidator(survey.Required))
+	survey.AskOne(prompt, &mode)
 
-	// fmt.Println("select app mode, options are: pricer, funny")
-	// fmt.Scanln(&mode)
-
-	switch {
-	case mode == "pricer":
-		pricer()
-	case mode == "notes":
-		notes()
-	case mode == "list from directory":
-		listFromDirectory()
-	case mode == "messenger":
-		messenger()
-	case mode == "funny":
-		funny()
-	case mode == "sys info":
+	switch mode {
+	case "sys info":
 		sysInfo()
-	case mode == "time zone converter":
-		timeZoneConvert()
-	case mode == "currency convert":
-		currencyConvert()
-	case mode == "fibonacci":
+	case "pricer":
+		pricer()
+	case "notes":
+		notes()
+	case "list from directory":
+		listFromDirectory()
+	case "messenger":
+		messenger()
+	case "funny":
+		funny()
+	case "currency convert":
+		CurrencyConvert()
+	case "fibonacci":
 		fibonacciLuncher()
-	case mode == "test":
+	case "time zone converter":
+		timeZoneConvert()
+	case "test":
 		test()
-	case mode == "exit":
+	case "exit":
 		cfmt.Errorln("exiting...")
 		return
 

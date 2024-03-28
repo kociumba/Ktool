@@ -9,6 +9,7 @@ import (
 	"github.com/atotto/clipboard"
 )
 
+// very shitty ls
 func listFromDirectory() {
 	dir := ""
 	fileList := ""

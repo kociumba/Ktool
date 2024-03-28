@@ -13,9 +13,10 @@ import (
 	"github.com/wzshiming/ctc"
 )
 
+// note actions handler
 func notes() {
 
-	var noteAction = ""
+	noteAction := ""
 
 	promptNote := &survey.Select{
 		Renderer: survey.Renderer{},
@@ -38,6 +39,7 @@ func notes() {
 
 }
 
+// add notes and write to disk
 func addNote() {
 	var newNote string
 
@@ -87,6 +89,7 @@ func addNote() {
 	// notes()
 }
 
+// read notes from disk
 func readNotes() {
 
 	if runtime.GOOS == "windows" {
@@ -127,8 +130,8 @@ func readNotes() {
 	// notes()
 }
 
+// handler for deleting notes
 func deleteNotes() {
-
 	if runtime.GOOS == "windows" {
 		f, err := os.Open("/Program Files (x86)/fuck you inc/ktool/notes.txt")
 		if err != nil {
@@ -173,6 +176,7 @@ func deleteNotes() {
 	// notes()
 }
 
+// deletes notes from disk
 func deleter(notesToDelete []string) error {
 	if runtime.GOOS == "windows" {
 

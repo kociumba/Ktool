@@ -10,6 +10,7 @@ import (
 	"github.com/wzshiming/ctc"
 )
 
+// very shitty btop
 func sysInfo() {
 
 	for {

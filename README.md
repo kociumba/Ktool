@@ -14,18 +14,18 @@ for now notes will only work per direcotry instead of system wide on linux and m
 
 ## Features
 
-- shitty sys info readout
-- note taking (a bit broken xd)
-- currency conversion (racists towards the british rn)
-- shitt ls function for listing shit in directories
+- shitty btop
+- note taking
+- currency conversion (anti british bias removed 💀)
+- shitty ls clone for listing shit in directories
 - the [pricer](https://gabagool.vercel.app/)
 - shitty fibonacci sequence I made couse of boredom
 - the funny
 
 ## Planned
 
+- fixed notes 
 - time zone conversion
-
 
 ## notes
 

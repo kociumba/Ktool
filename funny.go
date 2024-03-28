@@ -8,6 +8,7 @@ import (
 	"github.com/wzshiming/ctc"
 )
 
+// fetch dad jokes from api
 func funny() {
 	type JokeResponse struct {
 		ID     string `json:"id"`
