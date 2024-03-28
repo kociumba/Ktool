@@ -21,10 +21,10 @@ for now notes will only work per directry instead of system wide on linux and ma
 - the [pricer](https://gabagool.vercel.app/)
 - shitty fibonacci sequence I made couse of boredom
 - the funny
+- integration with my [Ksorter](https://github.com/kociumba/ksorter)
 
 ## Planned
 
-- fixed notes 
 - time zone conversion
 
 ## notes

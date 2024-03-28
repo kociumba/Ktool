@@ -25,6 +25,7 @@ func modeSelect() {
 			"notes",
 			"currency convert",
 			"list from directory",
+			"open Ksorter",
 			"funny",
 			"pricer",
 			"fibonacci",
@@ -56,6 +57,8 @@ func modeSelect() {
 		timeZoneConvert()
 	case "test":
 		test()
+	case "open Ksorter":
+		ksorter_integration()
 	case "exit":
 		cfmt.Errorln("exiting...")
 		return
