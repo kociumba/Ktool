@@ -10,7 +10,7 @@ Despite that you might find it usefull,
 To install this piece of shit compile it yourself with [Go](https://go.dev) or go to [releases](https://github.com/kociumba/ktool/releases) (currently no new build will have an installer, this is subject to change)
 
 
-for now notes will only work per direcotry instead of system wide on linux and mac 
+for now notes will only work per directry instead of system wide on linux and mac 
 
 ## Features
 
