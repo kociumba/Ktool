@@ -1,8 +1,8 @@
-# <p style="text-align: center;">Welcome to</p>
+# <p align="center">Welcome to</p>
 
-<div style="text-align: center;">
+<p align="center">
     <img src="Ktool.svg" alt="Ktool">
-</div>
+</p>
 
 ---
 
