@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/AlecAivazis/survey/v2"
 
@@ -12,12 +13,37 @@ import (
 
 func main() {
 
-	modeSelect()
+	getCmdArgs()
 
+}
+
+func getCmdArgs() {
+	args := os.Args
+	noRepeat := false
+
+	switch args[1] {
+	case "-notes":
+		notes()
+	case "-currency", "-currencyconvert":
+		CurrencyConvert(noRepeat)
+	case "-ksorter":
+		ksorter_integration()
+	case "-ls", "-listfromdirectory":
+		listFromDirectory()
+	case "-funny":
+		funny(noRepeat)
+	case "-pricer":
+		pricer(noRepeat)
+	case "-fibonacci":
+		fibonacciLuncher(noRepeat)
+	default:
+		modeSelect()
+	}
 }
 
 func modeSelect() {
 	mode := ""
+	repeat := true
 	prompt := &survey.Select{
 		Message: "app mode:",
 		Options: []string{
@@ -38,7 +64,7 @@ func modeSelect() {
 	case "sys info":
 		sysInfo()
 	case "pricer":
-		pricer()
+		pricer(repeat)
 	case "notes":
 		notes()
 	case "list from directory":
@@ -46,11 +72,11 @@ func modeSelect() {
 	case "messenger":
 		messenger()
 	case "funny":
-		funny()
+		funny(repeat)
 	case "currency convert":
-		CurrencyConvert()
+		CurrencyConvert(repeat)
 	case "fibonacci":
-		fibonacciLuncher()
+		fibonacciLuncher(repeat)
 	case "time zone converter":
 		timeZoneConvert()
 	case "test":

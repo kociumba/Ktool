@@ -1,4 +1,4 @@
-# ktool
+# Ktool
 
 ![Alt](https://repobeats.axiom.co/api/embed/7d35c6f4492d30a2a59ca3e3ad2a522c7ec523e9.svg "Repobeats analytics image")
 
@@ -9,7 +9,11 @@ Despite that you might find it usefully,
 
 Instructions for installing Ktool can be found in the [Ktool wiki](https://github.com/kociumba/ktool/wiki)
 
-## Features
+---
+
+# Features
+
+### usage by passing arguments is supported, more info on this on the [wiki](https://github.com/kociumba/ktool/wiki)
 
 1. [ ] shitty btop (for now disabled)
 2. [x] note-taking
@@ -20,6 +24,8 @@ Instructions for installing Ktool can be found in the [Ktool wiki](https://githu
 7. [x] the funny
 8. [x] integration with my [Ksorter](https://github.com/kociumba/ksorter)
 9. [ ] time zone conversion
+
+---
 
 ## Notes
 

@@ -12,7 +12,7 @@ import (
 )
 
 // fetches the latest exchange rate from an API and performs the currency conversion.
-func CurrencyConvert() {
+func CurrencyConvert(repeat bool) {
 
 	var amount float64
 	from := ""
@@ -93,5 +93,7 @@ func CurrencyConvert() {
 
 	fmt.Println("<------------------------------>")
 
-	main()
+	if repeat {
+		main()
+	}
 }

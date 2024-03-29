@@ -9,7 +9,7 @@ import (
 )
 
 // fetch dad jokes from api
-func funny() {
+func funny(repeat bool) {
 	type JokeResponse struct {
 		ID     string `json:"id"`
 		Joke   string `json:"joke"`
@@ -47,5 +47,7 @@ func funny() {
 	fmt.Println(ctc.Negative, joke.Joke, ctc.Reset)
 	fmt.Println("<-------------------------------------->")
 
-	main()
+	if repeat {
+		main()
+	}
 }

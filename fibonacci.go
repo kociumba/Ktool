@@ -29,7 +29,7 @@ func fibonacciCalc(n int, cache map[int]int) int {
 }
 
 // calculate the fibonacci sequence
-func fibonacciLuncher() {
+func fibonacciLuncher(repeat bool) {
 	var input string
 
 	promt := &survey.Input{
@@ -58,5 +58,7 @@ func fibonacciLuncher() {
 		}
 	}
 
-	main()
+	if repeat {
+		main()
+	}
 }

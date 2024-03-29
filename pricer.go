@@ -9,7 +9,7 @@ import (
 )
 
 // implement pricer
-func pricer() {
+func pricer(repeat bool) {
 
 	var price = 0.0
 	var discount = 0.0
@@ -55,5 +55,7 @@ func pricer() {
 	}
 	fmt.Println("<------------------------------------>")
 
-	main()
+	if repeat {
+		main()
+	}
 }
