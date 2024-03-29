@@ -13,7 +13,7 @@ Instructions for installing Ktool can be found in the [Ktool wiki](https://githu
 
 # Features
 
-### usage by passing arguments is supported, more info on this on the [wiki](https://github.com/kociumba/ktool/wiki)
+### Command line arguments are supported, more info on this on the [wiki](https://github.com/kociumba/ktool/wiki)
 
 1. [ ] shitty btop (for now disabled)
 2. [x] note-taking
