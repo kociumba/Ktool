@@ -21,24 +21,29 @@ func getCmdArgs() {
 	args := os.Args
 	noRepeat := false
 
-	switch args[1] {
-	case "-notes":
-		notes()
-	case "-currency", "-currencyconvert":
-		CurrencyConvert(noRepeat)
-	case "-ksorter":
-		ksorter_integration()
-	case "-ls", "-listfromdirectory":
-		listFromDirectory()
-	case "-funny":
-		funny(noRepeat)
-	case "-pricer":
-		pricer(noRepeat)
-	case "-fibonacci":
-		fibonacciLuncher(noRepeat)
-	default:
+	if len(args) == 1 {
 		modeSelect()
+	} else {
+		switch args[1] {
+		case "-notes":
+			notes()
+		case "-currency", "-currencyconvert":
+			CurrencyConvert(noRepeat)
+		case "-ksorter":
+			ksorter_integration()
+		case "-ls", "-listfromdirectory":
+			listFromDirectory()
+		case "-funny":
+			funny(noRepeat)
+		case "-pricer":
+			pricer(noRepeat)
+		case "-fibonacci":
+			fibonacciLuncher(noRepeat)
+		default:
+			modeSelect()
+		}
 	}
+
 }
 
 func modeSelect() {
