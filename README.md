@@ -2,31 +2,31 @@
 
 ![Alt](https://repobeats.axiom.co/api/embed/7d35c6f4492d30a2a59ca3e3ad2a522c7ec523e9.svg "Repobeats analytics image")
 
-ktool is a simple cli tool i wrote for myself in go,
-it contains all my stupid ideas i'm not too lazy to execute 
+Ktool is a simple cli tool I wrote for myself in go,
+it contains all my stupid ideas I'm not too lazy to execute 
 
-Despite that you might find it usefull,
+Despite that you might find it usefully,
 
-To install this piece of shit compile it yourself with [Go](https://go.dev) or go to [releases](https://github.com/kociumba/ktool/releases) (currently no new build will have an installer, this is subject to change)
-
-
-for now notes will only work per directry instead of system wide on linux and mac 
+Instructions for installing Ktool can be found in the [Ktool wiki](https://github.com/kociumba/ktool/wiki)
 
 ## Features
 
-- shitty btop
-- note taking
-- currency conversion (anti british bias removed 💀)
-- shitty ls clone for listing shit in directories
-- the [pricer](https://gabagool.vercel.app/)
-- shitty fibonacci sequence I made couse of boredom
-- the funny
-- integration with my [Ksorter](https://github.com/kociumba/ksorter)
+1. [x] shitty btop (improvement or removal planned)
+2. [x] note-taking
+3. [x] currency conversion (anti british bias removed 💀)
+4. [x] shitty ls clone for listing files in directories
+5. [x] the [pricer](https://gabagool.vercel.app/)
+6. [x] shitty fibonacci sequence I made couse of boredom
+7. [x] the funny
+8. [x] integration with my [Ksorter](https://github.com/kociumba/ksorter)
+9. [ ] time zone conversion
 
-## Planned
+## Notes
 
-- time zone conversion
+If any antiviruses give a false positive about this app downloading from a raw GitHub link,
+this is because the Ktool downloads the [Ksorter.ps1](https://github.com/kociumba/ksorter/blob/main/Ksorter.ps1) script automatically 
+from GitHub.
 
-## notes
+I could have prepackaged Ksorter with Ktool but that would mean Ktool wouldn't always use the latest version of Ksorter.
 
 if you are a developer, fixes to my shit code are more than welcome
