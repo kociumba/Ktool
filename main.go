@@ -1,9 +1,10 @@
 package main
 
+//go:generate go-winres make
+
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
+	"log"
+	"net"
 	"os"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -25,6 +26,8 @@ func getCmdArgs() {
 		modeSelect()
 	} else {
 		switch args[1] {
+		case "-help":
+			help()
 		case "-notes":
 			notes()
 		case "-currency", "-currencyconvert":
@@ -39,7 +42,10 @@ func getCmdArgs() {
 			pricer(noRepeat)
 		case "-fibonacci":
 			fibonacciLuncher(noRepeat)
+		// case "-time", "-timezoneconverter":
+		// 	timeZoneConvert()
 		default:
+			cfmt.Errorln("Invalid argument provided, opening normally...")
 			modeSelect()
 		}
 	}
@@ -95,28 +101,16 @@ func modeSelect() {
 	}
 }
 
-func timeZoneConvert() { //TODO make it work
-
-	client := http.Client{}
-
-	requestFrom, err := http.NewRequest("GET", "https://worldtimeapi.org/api/timezone", nil)
+func GetOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return
+		log.Fatal(err)
 	}
+	defer conn.Close()
 
-	resp, err := client.Do(requestFrom)
-	if err != nil {
-		fmt.Println(err)
-	}
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
 
-	defer resp.Body.Close()
-
-	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
-
-	fmt.Println(result)
-
+	return localAddr.IP
 }
 
 func test() { // used only for new feature testing

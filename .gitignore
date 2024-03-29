@@ -9,3 +9,5 @@ wiki.md
 /.idea
 /ktool.exe~
 /winres
+/tests
+/time_zones.go
