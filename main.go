@@ -21,15 +21,13 @@ func modeSelect() {
 	prompt := &survey.Select{
 		Message: "app mode:",
 		Options: []string{
-			"sys info",
 			"notes",
 			"currency convert",
-			"list from directory",
 			"open Ksorter",
+			"list from directory",
 			"funny",
 			"pricer",
 			"fibonacci",
-			"time zone converter",
 			"exit",
 		},
 	}

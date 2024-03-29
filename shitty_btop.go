@@ -35,4 +35,21 @@ func sysInfo() {
 		time.Sleep(500 * time.Millisecond)
 	}
 
+	// does not work on windows only linux
+	// before, err := cpu.Get()
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "%s\n", err)
+	// 	return
+	// }
+	// time.Sleep(time.Duration(1) * time.Second)
+	// after, err := cpu.Get()
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "%s\n", err)
+	// 	return
+	// }
+	// total := float64(after.Total - before.Total)
+	// fmt.Printf("cpu user: %f %%\n", float64(after.User-before.User)/total*100)
+	// fmt.Printf("cpu system: %f %%\n", float64(after.System-before.System)/total*100)
+	// fmt.Printf("cpu idle: %f %%\n", float64(after.Idle-before.Idle)/total*100)
+
 }

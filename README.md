@@ -11,7 +11,7 @@ Instructions for installing Ktool can be found in the [Ktool wiki](https://githu
 
 ## Features
 
-1. [x] shitty btop (improvement or removal planned)
+1. [ ] shitty btop (for now disabled)
 2. [x] note-taking
 3. [x] currency conversion (anti british bias removed 💀)
 4. [x] shitty ls clone for listing files in directories
