@@ -30,6 +30,7 @@ Instructions for installing Ktool can be found in the [Ktool wiki](https://githu
 7. [x] the funny
 8. [x] integration with my [Ksorter](https://github.com/kociumba/ksorter)
 9. [ ] time zone conversion
+10. [x] open Kserver. 
 
 ---
 

@@ -3,9 +3,9 @@ package main
 //go:generate go-winres make
 
 import (
-	"log"
-	"net"
 	"os"
+
+	k "github.com/Kserver"
 
 	"github.com/AlecAivazis/survey/v2"
 
@@ -42,6 +42,8 @@ func getCmdArgs() {
 			pricer(noRepeat)
 		case "-fibonacci":
 			fibonacciLuncher(noRepeat)
+		case "-kserver":
+			k.StartKserver()
 		// case "-time", "-timezoneconverter":
 		// 	timeZoneConvert()
 		default:
@@ -62,6 +64,7 @@ func modeSelect() {
 			"currency convert",
 			"open Ksorter",
 			"list from directory",
+			"open Kserver",
 			"funny",
 			"pricer",
 			"fibonacci",
@@ -94,6 +97,8 @@ func modeSelect() {
 		test()
 	case "open Ksorter":
 		ksorter_integration()
+	case "open Kserver":
+		k.StartKserver()
 	case "exit":
 		cfmt.Errorln("exiting...")
 		return
@@ -101,17 +106,17 @@ func modeSelect() {
 	}
 }
 
-func GetOutboundIP() net.IP {
-	conn, err := net.Dial("udp", "8.8.8.8:80")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn.Close()
+// func GetOutboundIP() net.IP {
+// 	conn, err := net.Dial("udp", "8.8.8.8:80")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer conn.Close()
 
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
+// 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 
-	return localAddr.IP
-}
+// 	return localAddr.IP
+// }
 
 func test() { // used only for new feature testing
 

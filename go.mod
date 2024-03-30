@@ -1,6 +1,6 @@
 module github.com/ktool
 
-go 1.20
+go 1.22.1
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
@@ -9,6 +9,8 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/wzshiming/ctc v1.2.3
 )
+
+require github.com/Kserver v0.0.0-00010101000000-000000000000
 
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
@@ -28,3 +30,5 @@ require (
 	golang.org/x/term v0.9.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 )
+
+replace github.com/Kserver => ./Kserver
