@@ -54,7 +54,9 @@ func StartKserver() {
 	}
 
 	cfmt.Infoln("Server starting on port ':6969'...")
-	log.Fatal(server.ListenAndServe())
+	go server.ListenAndServe()
+
+	fmt.Println(forward)
 
 	if forward == "yes" {
 		forwardPort()
@@ -70,9 +72,12 @@ func forwardPort() {
 	// forward with ngrok
 	cmd := exec.Command("ngrok", "http", "6969")
 	cmd.Stdin = os.Stdin
+
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
+
+	cfmt.Successln("check your ngrok account for the host details")
 
 	err := cmd.Run()
 	if err != nil {
@@ -81,7 +86,6 @@ func forwardPort() {
 		return
 	}
 
-	// Print the output of the PowerShell script
 	os.Stdout.WriteString(fmt.Sprintf("PowerShell Script Output:\n%s\n", stdout.String()))
 
 }
