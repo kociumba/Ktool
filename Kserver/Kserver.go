@@ -14,10 +14,15 @@ import (
 	"github.com/mingrammer/cfmt"
 )
 
+type serverConf struct {
+	forward string
+	dir     string
+	port    string
+}
+
 // StartKserver generates a server to host files from a specified directory and may automatically forward the port.
 func StartKserver() {
-	dir := ""
-	forward := ""
+	config := serverConf{}
 
 	dirInput := &survey.Input{
 		Renderer: survey.Renderer{},
@@ -34,14 +39,23 @@ func StartKserver() {
 		Help:     "should the server forward the port automatically to make the server accessible from the internet",
 	}
 
-	survey.AskOne(dirInput, &dir)
+	portInput := &survey.Input{
+		Renderer: survey.Renderer{},
+		Message:  "what port to host on: (default: 6969)",
+		Default:  "6969",
+		Help:     "choose which port to host on and possibly forward with ngrok",
+	}
 
-	survey.AskOne(forwardInput, &forward)
+	survey.AskOne(dirInput, &config.dir)
 
-	fileHandler := http.FileServer(http.Dir(dir))
+	survey.AskOne(forwardInput, &config.forward)
+
+	survey.AskOne(portInput, &config.port)
+
+	fileHandler := http.FileServer(http.Dir(config.dir))
 
 	server := &http.Server{
-		Addr:                         ":6969",
+		Addr:                         ":" + config.port,
 		Handler:                      fileHandler,
 		DisableGeneralOptionsHandler: false,
 		TLSConfig:                    &tls.Config{},
@@ -53,39 +67,37 @@ func StartKserver() {
 		ErrorLog:                     &log.Logger{},
 	}
 
-	cfmt.Infoln("Server starting on port ':6969'...")
-	go server.ListenAndServe()
+	cfmt.Infoln("Server starting on port ':" + config.port + "'...")
 
 	// fmt.Println(forward)
 
-	if forward == "yes" {
-		forwardPort()
+	if config.forward == "yes" {
+		go server.ListenAndServe()
+		forwardPort(config.port)
 	} else {
-		cfmt.Successln("Server live on http://localhost:6969/")
+		cfmt.Successln("Server live on http://localhost:" + config.port + "/")
+		server.ListenAndServe()
 	}
 }
 
 // forwardPort is a Go function that forwards a port using ngrok.
-func forwardPort() {
+func forwardPort(port string) {
+	cfmt.Infoln("forwarding port :" + port + " through ngrok...")
 
-	cfmt.Infoln("forwarding port :6969 through ngrok...")
 	// forward with ngrok
-	cmd := exec.Command("ngrok", "http", "6969")
-	cmd.Stdin = os.Stdin
+	cmd := exec.Command("ngrok", "http", port)
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	cfmt.Successln("check your ngrok account for the host details")
-
 	err := cmd.Run()
 	if err != nil {
 		// Handle error
-		os.Stderr.WriteString(fmt.Sprintf("Error executing PowerShell script: %s\n", err.Error()))
-		return
+		os.Stderr.WriteString(fmt.Sprintf("Error executing ngrok command: %s\n", err.Error()))
 	}
 
-	os.Stdout.WriteString(fmt.Sprintf("PowerShell Script Output:\n%s\n", stdout.String()))
-
+	// Print the output of the ngrok command
+	os.Stdout.WriteString(fmt.Sprintf("ngrok command output:\n%s\n", stdout.String()))
+	os.Stderr.WriteString(fmt.Sprintf("ngrok command error output:\n%s\n", stderr.String()))
 }
