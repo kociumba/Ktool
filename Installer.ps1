@@ -1,66 +1,90 @@
-# Function to add ktool to the system path
-function AddToPath {
-
-    Write-Host "this isn't finished yet"
-    Write-Host "you will have to add to path yourself for now"
-    # # Check if running with admin privileges
-    # $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    
-    # if (-not $isAdmin) {
-    #     Write-Warning "You need to run this script as an administrator to add ktool to the system path."
-    #     return $false
-    # }
-
-    # # Add the binary to the system path
-    # $binaryPath = $PWD.Path
-    # $envPath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
-    # if (-not ($envPath -split ";" | Where-Object {$_ -eq $binaryPath})) {
-    #     $envPath += ";$binaryPath"
-    #     [System.Environment]::SetEnvironmentVariable("Path", $envPath, "Machine")
-    #     Write-Host "ktool has been added to the system path."
-    #     return $true
-    # } else {
-    #     Write-Warning "ktool is already in the system path."
-    #     return $false
-    # }
-}
-
 # Check if Go is installed on the system
-if ($null -eq (Get-Command "go" -ErrorAction SilentlyContinue)) {
-    Write-Warning "Go is not installed, please install it from https://go.dev/dl/."
-    Write-Warning "After you install Go, run this script again."
-    return
+function checkGo {
+    if ($null -eq (Get-Command "go" -ErrorAction SilentlyContinue)) {
+        Write-Warning "Go is not installed, please install it from https://go.dev/dl/."
+        Write-Warning "After you install Go, run this script again."
+        return
+    }
 }
 
 # Build the Go binary
-go get -d ./...
-go build -ldflags "-s -w"
+function buildGo {
+    go get -d ./...
+    go build -ldflags "-s -w"
+}
 
-# Ask for admin rights to add ktool to path
-$Confirm = Read-Host "Do you want to add ktool to path? (y/n)"
-if ($Confirm -eq "y") {
-    # Check if user has admin rights
+function addToPath {
+    $pathToKtool = (Get-Location).Path
 
-    Write-Host "this isn't finished yet"
-    Write-Host "you will have to add to path yourself for now"
+    Add-EnvPath -Path $pathToKtool -Container "User"
+    # [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";" + $pathToKtool, "Machine")
+}
 
-    # $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+function Add-EnvPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $Path,
 
-    # if (-not $isAdmin) {
-    #     Write-Warning "This script needs to be run with administrative privileges to add ktool to the system path."
-    #     $ElevatePrompt = "Do you want to elevate the script to run with administrative privileges? (y/n)"
-    #     $ElevateConfirm = Read-Host $ElevatePrompt
-    #     if ($ElevateConfirm -eq "y") {
-    #         Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
-    #         return
-    #     } else {
-    #         Write-Warning "Admin rights not granted. ktool won't be added to the system path."
-    #         return
-    #     }
-    # }
+        [ValidateSet('Machine', 'User', 'Session')]
+        [string] $Container = 'Session'
+    )
 
-    # # Add ktool to the system path
-    # if (AddToPath) {
-    #     return
-    # }
+    if ($Container -ne 'Session') {
+        $containerMapping = @{
+            Machine = [EnvironmentVariableTarget]::Machine
+            User    = [EnvironmentVariableTarget]::User
+        }
+        $containerType = $containerMapping[$Container]
+
+        $persistedPaths = [Environment]::GetEnvironmentVariable('Path', $containerType) -split ';'
+        if ($persistedPaths -notcontains $Path) {
+            $persistedPaths = $persistedPaths + $Path | where { $_ }
+            [Environment]::SetEnvironmentVariable('Path', $persistedPaths -join ';', $containerType)
+        }
+    }
+
+    $envPaths = $env:Path -split ';'
+    if ($envPaths -notcontains $Path) {
+        $envPaths = $envPaths + $Path | where { $_ }
+        $env:Path = $envPaths -join ';'
+    }
+}
+
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+
+
+if (-not $isAdmin) {
+    Write-Host "Checking if Go is installed... " -NoNewline
+    checkGo
+    Write-Host "Done" -ForegroundColor Green
+
+    Write-Host "Building ktool... " -NoNewline
+    buildGo
+    Write-Host "Done" -ForegroundColor Green
+
+    Write-Warning "ktool has been built, but won't be added to the system path without admin privileges"
+}
+else {
+    Write-Host "Checking if Go is installed... " -NoNewline
+    checkGo
+    Write-Host "Done" -ForegroundColor Green
+
+    Write-Host "Building ktool... " -NoNewline
+    buildGo
+    Write-Host "Done" -ForegroundColor Green
+
+    Write-Host "Adding ktool to the system path... " -NoNewline
+    addToPath
+    Write-Host "Done" -ForegroundColor Green
+}
+
+if ($isAdmin) {
+    Write-Host "SUCCESS: ktool has been successfully built in the current directory " -ForegroundColor Green -NoNewline
+} else {
+    Write-Host "SUCCESS: ktool has been successfully built in the current directory" -ForegroundColor Green
+}
+
+if ($isAdmin) {
+    Write-Host "and added to the system path, restart PowerShell for changes to take effect" -ForegroundColor Green
 }
