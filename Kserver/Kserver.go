@@ -56,7 +56,7 @@ func StartKserver() {
 	cfmt.Infoln("Server starting on port ':6969'...")
 	go server.ListenAndServe()
 
-	fmt.Println(forward)
+	// fmt.Println(forward)
 
 	if forward == "yes" {
 		forwardPort()
