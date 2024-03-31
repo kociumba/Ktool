@@ -1,0 +1,18 @@
+{
+    "version": "0.0.0",
+    "description": "Simple cli tool with some useful and some less useful features",
+    "homepage": "https://github.com/kociumba/ktool",
+    "license": "MIT",
+    "depends": "main/go",
+    "architecture": "x64",
+    "extract_dir": "ktool-main",
+    "installer": {
+        "script": [
+            "go get -C $dir -d ./...",
+            "go build -C $dir -ldflags '-s -w'"
+        ]
+    },
+    "bin": "ktool.exe",
+    "hash": "",
+    "url": "https://github.com/kociumba/ktool/archive/refs/heads/main.zip"
+}
