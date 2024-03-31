@@ -91,8 +91,8 @@ func modeSelect() {
 		CurrencyConvert(repeat)
 	case "fibonacci":
 		fibonacciLuncher(repeat)
-	case "time zone converter":
-		timeZoneConvert()
+	// case "time zone converter":
+	// 	timeZoneConvert()
 	case "test":
 		test()
 	case "open Ksorter":
