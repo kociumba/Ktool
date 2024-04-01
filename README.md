@@ -1,5 +1,7 @@
 # <p align="center">Welcome to</p>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0b2ad3bf4b4b439f858bf1123a429a0f)](https://app.codacy.com/gh/kociumba/ktool?utm_source=github.com&utm_medium=referral&utm_content=kociumba/ktool&utm_campaign=Badge_Grade)
+
 <p align="center">
     <img src="Ktool.svg" alt="Ktool">
 </p>
