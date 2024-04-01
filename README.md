@@ -13,7 +13,7 @@ it contains all my stupid ideas I'm not too lazy to execute
 
 Despite that you might find it usefully,
 
-Instructions for installing Ktool can be found in the [Ktool wiki](https://github.com/kociumba/ktool/wiki)
+Instructions for installing Ktool can be found in the [Ktool wiki](https://github.com/kociumba/ktool/wiki) (The recommended way to install Ktool is to use the [scoop install script](https://github.com/kociumba/ktool/blob/main/ktool.json))
 
 ---
 
