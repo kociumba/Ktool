@@ -1,9 +1,12 @@
 {
-    "version": "0.0.0",
+    "version": "0.0.0.1",
     "description": "Simple cli tool with some useful and some less useful features",
     "homepage": "https://github.com/kociumba/ktool",
     "license": "MIT",
-    "depends": "main/go",
+    "depends": [
+        "main/go",
+        "main/gcc"
+    ],
     "architecture": "x64",
     "extract_dir": "ktool-main",
     "installer": {
