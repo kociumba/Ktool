@@ -55,36 +55,36 @@ $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIde
 
 
 if (-not $isAdmin) {
-    Write-Host "Checking if Go is installed... " -NoNewline
+    echo "Checking if Go is installed... " -NoNewline
     checkGo
-    Write-Host "Done" -ForegroundColor Green
+    echo "Done" -ForegroundColor Green
 
-    Write-Host "Building ktool... " -NoNewline
+    echo "Building ktool... " -NoNewline
     buildGo
-    Write-Host "Done" -ForegroundColor Green
+    echo "Done" -ForegroundColor Green
 
     Write-Warning "ktool has been built, but won't be added to the system path without admin privileges"
 }
 else {
-    Write-Host "Checking if Go is installed... " -NoNewline
+    echo "Checking if Go is installed... " -NoNewline
     checkGo
-    Write-Host "Done" -ForegroundColor Green
+    echo "Done" -ForegroundColor Green
 
-    Write-Host "Building ktool... " -NoNewline
+    echo "Building ktool... " -NoNewline
     buildGo
-    Write-Host "Done" -ForegroundColor Green
+    echo "Done" -ForegroundColor Green
 
-    Write-Host "Adding ktool to the system path... " -NoNewline
+    echo "Adding ktool to the system path... " -NoNewline
     addToPath
-    Write-Host "Done" -ForegroundColor Green
+    echo "Done" -ForegroundColor Green
 }
 
 if ($isAdmin) {
-    Write-Host "SUCCESS: ktool has been successfully built in the current directory " -ForegroundColor Green -NoNewline
+    echo "SUCCESS: ktool has been successfully built in the current directory " -ForegroundColor Green -NoNewline
 } else {
-    Write-Host "SUCCESS: ktool has been successfully built in the current directory" -ForegroundColor Green
+    echo "SUCCESS: ktool has been successfully built in the current directory" -ForegroundColor Green
 }
 
 if ($isAdmin) {
-    Write-Host "and added to the system path, restart PowerShell for changes to take effect" -ForegroundColor Green
+    echo "and added to the system path, restart PowerShell for changes to take effect" -ForegroundColor Green
 }
