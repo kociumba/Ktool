@@ -58,13 +58,15 @@ func StartKserver() {
 		Addr:                         ":" + config.port,
 		Handler:                      fileHandler,
 		DisableGeneralOptionsHandler: false,
-		TLSConfig:                    &tls.Config{},
-		ReadTimeout:                  60 * time.Second,
-		ReadHeaderTimeout:            60 * time.Second,
-		WriteTimeout:                 60 * time.Second,
-		IdleTimeout:                  0,
-		MaxHeaderBytes:               0,
-		ErrorLog:                     &log.Logger{},
+		TLSConfig: &tls.Config{
+			MinVersion: tls.VersionTLS13,
+		},
+		ReadTimeout:       60 * time.Second,
+		ReadHeaderTimeout: 60 * time.Second,
+		WriteTimeout:      60 * time.Second,
+		IdleTimeout:       0,
+		MaxHeaderBytes:    0,
+		ErrorLog:          &log.Logger{},
 	}
 
 	cfmt.Infoln("Server starting on port ':" + config.port + "'...")

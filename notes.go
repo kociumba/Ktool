@@ -19,7 +19,7 @@ func notes() {
 		log.Fatal(err)
 	}
 	homeDir := fmt.Sprintf(u.HomeDir + `/ktool/notes.txt`)
-	err = os.MkdirAll(u.HomeDir+"/ktool", 0755)
+	err = os.MkdirAll(u.HomeDir+"/ktool", 0700)
 	if err != nil {
 		log.Fatal(err)
 	}
