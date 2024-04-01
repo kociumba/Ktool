@@ -97,7 +97,7 @@ func forwardPort(port string) {
 	if err != nil {
 		// Handle error
 		os.Stderr.WriteString(fmt.Sprintf("Error executing ngrok command: %s\n", err.Error()))
-		os.Stderr.WriteString(fmt.Sprintf("you most likely don't have ngrok installed\ntry insatlling it with `scoop install main/ngrok`"))
+		os.Stderr.WriteString("you most likely don't have ngrok installed\ntry insatlling it with `scoop install main/ngrok`")
 	}
 
 	// Print the output of the ngrok command
