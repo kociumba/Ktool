@@ -31,4 +31,7 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 )
 
-replace github.com/Kserver => ./Kserver
+replace (
+	// github.com/Kgallery => ./Kgallery
+	github.com/Kserver => ./Kserver
+)

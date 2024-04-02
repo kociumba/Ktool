@@ -5,7 +5,9 @@ package main
 import (
 	"os"
 
-	k "github.com/Kserver"
+	// kgallery "github.com/Kgallery"
+
+	kserver "github.com/Kserver"
 
 	"github.com/AlecAivazis/survey/v2"
 
@@ -43,7 +45,7 @@ func getCmdArgs() {
 		case "-fibonacci":
 			fibonacciLuncher(noRepeat)
 		case "-kserver":
-			k.StartKserver()
+			kserver.StartKserver()
 		// case "-time", "-timezoneconverter":
 		// 	timeZoneConvert()
 		default:
@@ -98,7 +100,7 @@ func modeSelect() {
 	case "open Ksorter":
 		ksorter_integration()
 	case "open Kserver":
-		k.StartKserver()
+		kserver.StartKserver()
 	case "exit":
 		cfmt.Errorln("exiting...")
 		return
