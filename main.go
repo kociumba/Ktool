@@ -85,8 +85,8 @@ func modeSelect() {
 		notes()
 	case "list from directory":
 		listFromDirectory()
-	case "messenger":
-		messenger()
+	// case "messenger":
+	// 	messenger()
 	case "funny":
 		funny(repeat)
 	case "currency convert":
