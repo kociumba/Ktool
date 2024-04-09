@@ -1,21 +1,24 @@
 # <p align="center">Welcome to</p>
 
 <p align="center">
-    <img src="Ktool.svg" alt="Ktool">
+    <img src="Ktool.svg" alt="Ktool" title="ktool logo">
 </p>
 
 <div align="center">
 <p>
-    <a href="https://app.codacy.com/gh/kociumba/ktool/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/d433479fcef242dd8555669d8777e2fa" alt="Codacy Badge" /></a>
-    <img src="https://img.shields.io/discord/974403756814893146?style=flat&amp;logo=discord" alt="Discord" />
-    <img src="https://img.shields.io/badge/compiled_size-14mb-1" alt="Static Badge" />
-    <img src="https://img.shields.io/github/license/kociumba/ktool" alt="GitHub License" />
-    <img src="https://badgen.net/github/commits/kociumba/ktool" alt="GitHub Commits" />
-    <br />
-    <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="uses Go" />
-    <img src="https://img.shields.io/badge/powershell-5391FE?style=flat&logo=powershell&logoColor=white" alt="uses Powershell" />
-    <img src="https://img.shields.io/badge/Snyk-4C4A73?style=flat&logo=snyk&logoColor=white" alt="uses Snyk" />
-    <img src="https://img.shields.io/badge/VSCode-0078D4?style=flat&logo=visual%20studio%20code&logoColor=white" alt="uses VSCode" />
+    <a href="https://app.codacy.com/gh/kociumba/ktool/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/d433479fcef242dd8555669d8777e2fa" alt="Codacy Badge" title="Codacy badge"/></a>
+    <a href="https://discord.gg/nMh3gqKu4Q"><img src="https://img.shields.io/discord/974403756814893146?logo=discord" alt="Discord server" title="Discord server"></a>
+    <img src="https://img.shields.io/badge/compiled_size-14mb-1" alt="Static Badge" title="Compiled size"/>
+    <a href="https://github.com/kociumba/ktool/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kociumba/ktool" alt="GitHub License" title="license"/></a>
+    <a href="https://github.com/kociumba/ktool/commits/main/"><img src="https://badgen.net/github/commits/kociumba/ktool" alt="GitHub Commits" title="commits to main"/></a>
+    <br /> 
+</p>    
+<h3>Uses:</h3>
+<p>   
+    <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="uses Go" title="Go"/>
+    <img src="https://img.shields.io/badge/powershell-5391FE?style=flat&logo=powershell&logoColor=white" alt="uses Powershell" title="Powershell"/>
+    <img src="https://img.shields.io/badge/Snyk-4C4A73?style=flat&logo=snyk&logoColor=white" alt="uses Snyk" title="Snyk"/>
+    <img src="https://img.shields.io/badge/VSCode-0078D4?style=flat&logo=visual%20studio%20code&logoColor=white" alt="uses VSCode" title="VSCode"/>
 </p>
 </div>
 
