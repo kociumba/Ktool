@@ -15,6 +15,15 @@
             "go build -C $dir -ldflags '-s -w'"
         ]
     },
+    "post_install": [
+        "Write-Host 'Installation complete!' -ForegroundColor Green",
+        "$pattern = '*Kinjector*'",
+        "try {",
+        "    Get-ChildItem -Path $cachedir -Filter $pattern -File -Recurse | Remove-Item -Force",
+        "} catch {",
+        "    Write-Error 'Error encountered while trying to delete: $_'",
+        "}"
+    ],
     "bin": "ktool.exe",
     "hash": "",
     "url": "https://github.com/kociumba/ktool/archive/refs/heads/main.zip"
