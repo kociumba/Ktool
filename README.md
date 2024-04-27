@@ -22,10 +22,9 @@
 </p>
 </div>
 
-
 ---
 
-![Alt](https://repobeats.axiom.co/api/embed/7d35c6f4492d30a2a59ca3e3ad2a522c7ec523e9.svg "Repobeats analytics image")
+# Overview
 
 This is a simple cli tool I wrote for myself in go,
 it contains all my stupid ideas I'm not too lazy to execute 
@@ -35,14 +34,18 @@ Ktool is a part of my K suite of tools that so far includes:
 - [Ksorter](https://github.com/kociumba/ksorter)
 - [Kinjector](https://github.com/kociumba/Kinjector)
 
-
 Instructions for installing Ktool can be found in the [Ktool wiki](https://github.com/kociumba/ktool/wiki) (The recommended way to install Ktool is to use the [scoop install script](https://github.com/kociumba/ktool/blob/main/ktool.json))
 
 ---
 
 # Features
 
-### Command line arguments are supported, more info on this on the [wiki](https://github.com/kociumba/ktool/wiki)
+> [!NOTE]
+> **_Command line arguments are supported, more info on this on the [wiki](https://github.com/kociumba/ktool/wiki)_**
+
+> [!WARNING]
+> This project is due for a major rewrite that will happen when I have time.
+> This will most likely introduce breaking feature changes.
 
 1. [ ] shitty btop (for now disabled)
 2. [x] note-taking
@@ -66,3 +69,5 @@ from GitHub.
 I could have prepackaged Ksorter with Ktool but that would mean Ktool wouldn't always use the latest version of Ksorter.
 
 if you are a developer, fixes to my shit code are more than welcome
+
+![Alt](https://repobeats.axiom.co/api/embed/7d35c6f4492d30a2a59ca3e3ad2a522c7ec523e9.svg "Repobeats analytics image")
