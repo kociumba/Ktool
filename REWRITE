@@ -1,3 +1,18 @@
 - migrate to bbuble tea as the cli framework
 - bug fixes
 - fix anything that comes up
+- fix Kserver with a few improvements
+
+
+# PROGRESS
+
+- main.go - 100%
+- currency_converter.go - 0%
+- funny.go - 0%
+- pricer.go - 0%
+- fibonacci.go - 0%
+- notes.go - 0%
+- shitty_btop.go - 0%
+- shitty_ls.go - 0%
+- ksorter.go - 0%
+- help.go - 0%
