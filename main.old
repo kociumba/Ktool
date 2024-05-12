@@ -1,30 +1,33 @@
-package main
+// package main
+
+//go:generate go-winres make
 
 import (
 	"os"
 
-	kserver "github.com/Kserver"
-	"github.com/charmbracelet/huh"
-	"github.com/charmbracelet/log"
-)
+	// kgallery "github.com/Kgallery"
 
-var (
-	mode      string
-	noRepeat  = false
-	repeat    = true
-	firstPass = true
+	kserver "github.com/Kserver"
+
+	"github.com/AlecAivazis/survey/v2"
+
+	"github.com/mingrammer/cfmt"
 )
 
 func main() {
 
-	if !firstPass {
-		os.Args = []string{}
-	}
+	getCmdArgs()
 
-	if len(os.Args) == 1 {
+}
+
+func getCmdArgs() {
+	args := os.Args
+	noRepeat := false
+
+	if len(args) == 1 {
 		modeSelect()
 	} else {
-		switch os.Args[1] {
+		switch args[1] {
 		case "-help":
 			help()
 		case "-notes":
@@ -46,34 +49,32 @@ func main() {
 		// case "-time", "-timezoneconverter":
 		// 	timeZoneConvert()
 		default:
-			log.Warn("Invalid argument provided, opening normally...")
+			cfmt.Errorln("Invalid argument provided, opening normally...")
 			modeSelect()
 		}
-	}
-
-	if firstPass {
-		firstPass = false
 	}
 
 }
 
 func modeSelect() {
+	mode := ""
+	repeat := true
+	prompt := &survey.Select{
+		Message: "app mode:",
+		Options: []string{
+			"notes",
+			"currency convert",
+			"open Ksorter",
+			"list from directory",
+			"open Kserver",
+			"funny",
+			"pricer",
+			"fibonacci",
+			"exit",
+		},
+	}
 
-	huh.NewSelect[string]().
-		Options(
-			huh.NewOption("notes", "notes"),
-			huh.NewOption("currency convert", "currency convert"),
-			huh.NewOption("open Ksorter", "open Ksorter"),
-			huh.NewOption("list from directory", "list from directory"),
-			huh.NewOption("open Kserver", "open Kserver"),
-			huh.NewOption("funny", "funny"),
-			huh.NewOption("pricer", "pricer"),
-			huh.NewOption("fibonacci", "fibonacci"),
-			huh.NewOption("exit", "exit"),
-		).
-		Title("app mode:").
-		Value(&mode).
-		Run()
+	survey.AskOne(prompt, &mode)
 
 	switch mode {
 	case "sys info":
@@ -101,11 +102,23 @@ func modeSelect() {
 	case "open Kserver":
 		kserver.StartKserver()
 	case "exit":
-		log.Error("exiting...")
+		cfmt.Errorln("exiting...")
 		return
-	}
 
+	}
 }
+
+// func GetOutboundIP() net.IP {
+// 	conn, err := net.Dial("udp", "8.8.8.8:80")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer conn.Close()
+
+// 	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+// 	return localAddr.IP
+// }
 
 func test() { // used only for new feature testing
 
