@@ -5,52 +5,52 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"strconv"
 	"strings"
 
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/wzshiming/ctc"
+	"github.com/charmbracelet/huh"
+	"github.com/charmbracelet/log"
 )
+
+var (
+	amount    float64
+	amountStr string
+	from      string
+	to        string
+)
+
+type CurrencyResponse struct {
+	Amount float64            `json:"amount"`
+	Base   string             `json:"base"`
+	Date   string             `json:"date"`
+	Rates  map[string]float64 `json:"rates"`
+}
 
 // fetches the latest exchange rate from an API and performs the currency conversion.
 func CurrencyConvert(repeat bool) {
 
-	var amount float64
-	from := ""
-	to := ""
+	huh.NewInput().
+		Placeholder("100").
+		Description("amount of money to convert, currency nonspecific").
+		Value(&amountStr).
+		Run()
 
-	type CurrencyResponse struct {
-		Amount float64            `json:"amount"`
-		Base   string             `json:"base"`
-		Date   string             `json:"date"`
-		Rates  map[string]float64 `json:"rates"`
+	amount, err := strconv.ParseFloat(amountStr, 64)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	promptAmount := &survey.Input{
-		Message: "select the amount:",
-		Help:    "amaout of money to convert, currency nonspecific",
-	}
+	huh.NewInput().
+		Placeholder("USD").
+		Description("convert from:").
+		Value(&from).
+		Run()
 
-	if err := survey.AskOne(promptAmount, &amount, survey.WithValidator(survey.Required)); err != nil {
-		panic(err)
-	}
-
-	promptFrom := &survey.Input{
-		Message: "convert from:",
-		Help:    "use an international currency code like 'USD', if it doesn't work it means the api i'm using doesn't support this currency",
-	}
-
-	if err := survey.AskOne(promptFrom, &from, survey.WithValidator(survey.Required)); err != nil {
-		panic(err)
-	}
-
-	promptTo := &survey.Input{
-		Message: "convert to:",
-		Help:    "use an international currency code like 'USD', if it doesn't work it means the api i'm using doesn't support this currency",
-	}
-
-	if err := survey.AskOne(promptTo, &to, survey.WithValidator(survey.Required)); err != nil {
-		panic(err)
-	}
+	huh.NewInput().
+		Placeholder("EUR").
+		Description("convert to:").
+		Value(&to).
+		Run()
 
 	client := http.Client{}
 
@@ -68,14 +68,12 @@ func CurrencyConvert(repeat bool) {
 	if err != nil {
 		panic(err)
 	}
+	defer resp.Body.Close()
 
 	var response CurrencyResponse
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		panic(err)
 	}
-
-	fmt.Println("<----------CONVERSION---------->")
-	fmt.Println(ctc.ForegroundBright, "current exchange from", from, "to", to, ctc.Reset)
 
 	rate, ok := response.Rates[to]
 	if !ok {
@@ -84,14 +82,18 @@ func CurrencyConvert(repeat bool) {
 		rate, ok = response.Rates[to]
 	}
 
+	var result string
+
 	if !ok {
-		fmt.Println("Exchange rate not available for the selected currency pair")
+		result = "Exchange rate not available for the selected currency pair"
 	} else {
 		exchangedAmount := math.Round((amount*rate)*100) / 100
-		fmt.Println(ctc.ForegroundBrightGreen, amount, from, "is", exchangedAmount, to, ctc.Reset)
+		result = fmt.Sprintf("%v %v is %v %v", amount, from, exchangedAmount, to)
 	}
 
-	fmt.Println("<------------------------------>")
+	output := fmt.Sprintf("<----------CONVERSION---------->\n\ncurrent exchange from %v to %v\n%v\n\n<----------------------------->", from, to, result)
+
+	huh.NewText().Lines(6).Value(&output).Run()
 
 	if repeat {
 		main()

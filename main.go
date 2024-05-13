@@ -2,9 +2,11 @@ package main
 
 import (
 	"os"
+	"slices"
 
-	kserver "github.com/Kserver"
-	"github.com/charmbracelet/huh"
+	kserver "Ktool/Kserver"
+	"Ktool/ui"
+
 	"github.com/charmbracelet/log"
 )
 
@@ -13,12 +15,15 @@ var (
 	noRepeat  = false
 	repeat    = true
 	firstPass = true
+	args      = os.Args
 )
 
 func main() {
 
 	if !firstPass {
-		os.Args = []string{}
+		if len(os.Args) > 1 {
+			args = slices.Delete(args, 1, len(args))
+		}
 	}
 
 	if len(os.Args) == 1 {
@@ -59,51 +64,9 @@ func main() {
 
 func modeSelect() {
 
-	huh.NewSelect[string]().
-		Options(
-			huh.NewOption("notes", "notes"),
-			huh.NewOption("currency convert", "currency convert"),
-			huh.NewOption("open Ksorter", "open Ksorter"),
-			huh.NewOption("list from directory", "list from directory"),
-			huh.NewOption("open Kserver", "open Kserver"),
-			huh.NewOption("funny", "funny"),
-			huh.NewOption("pricer", "pricer"),
-			huh.NewOption("fibonacci", "fibonacci"),
-			huh.NewOption("exit", "exit"),
-		).
-		Title("app mode:").
-		Value(&mode).
-		Run()
+	ui.ModePrompt.Value(&mode).Run()
 
-	switch mode {
-	case "sys info":
-		sysInfo()
-	case "pricer":
-		pricer(repeat)
-	case "notes":
-		notes()
-	case "list from directory":
-		listFromDirectory()
-	// case "messenger":
-	// 	messenger()
-	case "funny":
-		funny(repeat)
-	case "currency convert":
-		CurrencyConvert(repeat)
-	case "fibonacci":
-		fibonacciLuncher(repeat)
-	// case "time zone converter":
-	// 	timeZoneConvert()
-	case "test":
-		test()
-	case "open Ksorter":
-		ksorter_integration()
-	case "open Kserver":
-		kserver.StartKserver()
-	case "exit":
-		log.Error("exiting...")
-		return
-	}
+	_ = luncher(mode) // returns appMode not needed rn
 
 }
 

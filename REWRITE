@@ -7,7 +7,7 @@
 # PROGRESS
 
 - main.go - 100%
-- currency_converter.go - 0%
+- currency_converter.go - 100%(not very happy with the styling yet)
 - funny.go - 0%
 - pricer.go - 0%
 - fibonacci.go - 0%
