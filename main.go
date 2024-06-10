@@ -66,7 +66,7 @@ func modeSelect() {
 
 	ui.ModePrompt.Value(&mode).Run()
 
-	_ = luncher(mode) // returns appMode not needed rn
+	_ = luncher(mode) // returns appMode | not needed rn
 
 }
 

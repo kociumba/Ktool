@@ -13,7 +13,7 @@ import (
 // this is a luncher for my Ksorter powershell script
 func ksorter_integration() {
 
-	resp, err := http.Get("https://raw.githubusercontent.com/kociumba/ksorter/main/Ksorter.ps1")
+	resp, err := http.Get("https://raw.githubusercontent.com/kociumba/Ksorter/main/Ksorter.ps1")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,9 +33,8 @@ func ksorter_integration() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	command := fmt.Sprintf(filepath + "/Ksorter.ps1")
 
-	cmd := exec.Command("powershell.exe", "-ExecutionPolicy", "Bypass", command)
+	cmd := exec.Command("powershell.exe", "-ExecutionPolicy", "Unrestricted", fmt.Sprintf(filepath+"/Ksorter.ps1"))
 	// fmt.Println(cmd.Args)
 	cmd.Stdin = os.Stdin
 
